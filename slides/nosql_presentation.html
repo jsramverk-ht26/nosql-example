@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoSQL-databaser och MongoDB</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/serif.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/monokai.min.css">
+    <link rel="stylesheet" href="nosql.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <section>
+                <h2>mongodb</h2>
+
+                <p> - en introduktion</p>
+            </section>
+
+            <section>
+                <h2>SQL vs NoSQL</h2>
+
+                <p>Till skillnad mot traditionella relationsdatabaser (RDB) så är NoSql databaser inte baserade på strukturerade tabeller 
+                    med fält enligt en 'fast' struktur. </p>
+                <p>NoSql kommer med några pros och några cons.</p>
+                <p>det finns ett antal olika kategorier...</p>
+                <p></p>
+            </section>
+
+            <!-- NoSQL Types -->
+            <section>
+                <h2>NoSQL typer/kategorier</h2>
+                <div class="fragment">
+                    <h5>1. DOKUMENT</h5>
+                    <p>- <strong>MongoDB</strong>, CouchDB: JSON-liknande dokument</p>
+                
+                    <h5>2. KEY/VALUE</h5>
+                    <p>- Redis, DynamoDB: key/value par</p>
+                
+                    <h5>3. COLUMN</h5>
+                    <p>- Cassandra, HBase: relaterade/länkade kolumner</p>
+                
+                    <h5>4. GRAPH</h5>
+                    <p>- Neo4j, Neptune: nod-baserade relationer</p>
+                </div>
+            </section>
+
+            
+
+            <!-- MongoDB -->
+            <section>
+                <h1>MongoDB</h1>
+                <p>Vad är MongoDB?</p>
+            </section>
+
+            <section>
+                <h2>Vad är MongoDB?</h2>
+                <ul>
+                    <li>Dokumentdatabas (document-oriented)</li>
+                    <li>Open source (med kommersiell support)</li>
+                    <li>Skriven i C++, cross-platform</li>
+                    <li>En av de mest 'populära'</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Koncept</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>SQL</th>
+                            <th>MongoDB</th>
+                            <th>Beskrivning</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Database</td>
+                            <td>Database</td>
+                            <td>Samma koncept</td>
+                        </tr>
+                        <tr>
+                            <td>Table</td>
+                            <td>Collection</td>
+                            <td>Samling med dokument</td>
+                        </tr>
+                        <tr>
+                            <td>Row</td>
+                            <td>Document</td>
+                            <td>En datapost</td>
+                        </tr>
+                        <tr>
+                            <td>Column</td>
+                            <td>Field</td>
+                            <td>Attribut</td>
+                        </tr>
+                        <tr>
+                            <td>JOIN</td>
+                            <td>Embedding/Linking</td>
+                            <td>Relationer mellan data</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h2>Dokumentstruktur (BSON)</h2>
+                <div class="two-column">
+                    <div>
+                        <h4>BSON = Binary JSON</h4>
+                        <h6>- Utökad version av JSON</h6>
+                        <h6>- Fler datatyper</h6>
+                        <h6>- ObjectId, Date, etc.</h6>
+                        <br>
+                        <br>
+                        <h6>Exemplet t.h är ett s.k "document":</h6>
+                    </div>
+                    <div>
+                        <pre><code class="javascript">{
+    "_id": ObjectId("..."),
+    "name": "Fmil Eolino",
+    "email": "opp@blabla.ug",
+    "age": 37,
+    "addresses": [
+        {
+        "type": "home",
+        "street": "Knösövägen 531",
+        "city": "Karlskrona"
+        }
+    ],
+    "created_at": ISODate("2024-01-01")
+}
+                        </code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>ObjectId - Unik identifierare</h2>
+                
+                <h4><strong>ObjectId</strong></h4>
+                <ul>
+                    <li>MongoDB:s standardformat för <code>_id</code>-fält <i>(PK)</i></li>
+                    <li>12-byte värde som garanterar unikhet för varje dokument i en collection</li>
+                    <li><u>Genereras automatiskt</u> (för varje nytt dokument)</li>
+                </ul>
+                <div>
+                        <pre><code class="javascript">{
+    "_id": ObjectId("..."),
+    ...
+}
+                        </code></pre>
+                    </div>
+                
+            </section>
+            <section>
+                <h3>Exempel - skillnader/likheter med SQL</h3>
+            </section>
+            <section>
+                
+                <p><i>Exempel: databas för att hantera alla lärare som arbetar i kurser.</i></p>
+                <div class="fragment">
+                <p>I SQL krävs separata tabeller och mellantabeller för många-till-många relationer</p>
+                
+                <h4>teacher</h4>
+                <pre><code class="sql">| id | name  | email           |
+|----|-------|----------------|
+| 1  | Masse | masse@bth.se   |
+| 2  | Emil  | emil@bth.se    |
+                </code></pre>
+                
+                <h4>course</h4>
+                <pre><code class="sql">| id | code   | name              |
+|----|--------|-------------------|
+| 1  | ME1627 | Forskningsmetodik |
+| 2  | DV1711 | Projekt          |
+                </code></pre>
+                </div>
+            </section>
+
+            <section>
+                <h2>mellantabell</h2>
+                <p>"Många till många" mellan lärare och kurs:</p>
+                
+                <h4>teacher_courses (mellantabell)</h4>
+                <pre><code class="sql">| teacher_id | course_id |
+|------------|-----------|
+| 1          | 1         |
+| 1          | 2         |
+| 2          | 1         |
+                </code></pre>
+                
+                <div class="fragment">
+                    <p>"Utmaningar" i en RDB:</p>
+                    <ul>
+                        <li>Mellantabell måste hanteras</li>
+                        <li>Komplexa JOIN-queries</li>
+                        <li>Fast tabell-struktur</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                
+                <p>MongoDB erbjuder flera olika sätt att hantera samma relation:</p>
+                
+                <div class="fragment">
+                    <p><strong>Embedded:</strong> - kurser inne direkt i användardokument</p>
+                </div>
+                
+                <div class="fragment">
+                    <p><strong>Referenced:</strong> - separata collections med ObjectId-referenser</p>
+                </div>
+                
+                <div class="fragment">
+                    <p><strong>Hybrid:</strong> - kombination av båda metoderna </p>
+                </div>
+                </section>
+
+            <section>
+                
+                    <h4>Fördelar med MongoDb:</h4>
+                    <ul>
+                        <li>Ingen obligatorisk kopplatabell</li>
+                        <li>Kan lagra ytterligare metadata direkt</li>
+                        <li>Flexibel struktur per dokument</li>
+                        <li>Välj approach baserat på användningsfall</li>
+                    </ul>
+                
+            </section>
+
+            <section>
+                <h4>Datamodellering: Embedded vs Referenced</h4>
+                <div class="two-column">
+                    <div class="fragment">
+                        <h4>Embedded</h4>
+                        <pre><code class="javascript">//collection: student_courses 
+{
+    "student": "masse@student.bth.se",
+    "courses": [
+        {
+            "code": "ME1627",
+            "name": "Forskningsmetodik 7"
+        },
+        {
+            "code": "DV1711", 
+            "name": "Projekt"
+        }
+    ]
+}
+                        </code></pre>
+                        <p>1-till-få relationer</p>
+                    </div>
+                    <div class="fragment">
+                        <h4>Referenced</h4>
+                        <pre><code class="javascript">// collection: course_responsible
+{
+    "_id": ObjectId("..."),
+    "name": "Masse"
+}
+...
+</code></pre>
+<pre><code class="javascript">// collection: courses
+{
+    "name": "ET2507",
+    "course_responsible": ObjectId("...")
+},
+{
+    "name": "ET2507",
+    "course_responsible": ObjectId("...")
+}
+                        </code></pre>
+                        <p>1-till-många relationer</p>
+                    </div>
+                </div>
+            </section>
+
+                <section>
+                    <h3>Många-till-många</h3>
+                    <p>Ja det går. Kortfattat så kan man placera referenser till dokument i olika collections mha ObjectId.</p>
+                    <p>Överväg noga om det inte går att lösa på annat sätt.</p>
+                    <p>Låt oss gå vidare.</p>
+                </section>
+
+                <section>
+                    <h2>Arbeta med MongoDB</h2>
+                    
+                    <ul>
+                        <li><strong>MongoDB Shell:</strong> cli-verktyg/klient (mongosh)</li>
+                        <li><strong>Programmeringsspråk:</strong> Drivers för Node.js, Python, Java, etc.</li>
+                        <li><strong>GUI-verktyg:</strong> MongoDB Compass, Studio 3T</li>
+                    </ul>
+                    
+                    <div class="fragment">
+                        <h4><strong>Kommandon syntax:</strong></h4>
+                        <ul>
+                            <li><code>db.collection.operation()</code></li>
+                            <li><strong>db</strong> = aktuell databas</li>
+                            <li><strong>collection</strong> = tabellens motsvarighet</li>
+                            <li><strong>operation</strong> = vad du vill göra</li>
+                        </ul>
+                    
+                </section>
+
+                <section>
+                    <div class="fragment">
+                        <h4><strong>Bra att veta</strong></h4>
+                        <ul>
+                            <li>Collections skapas automatiskt när du lägger till första dokumentet
+                                <p><code>db.users.insertOne({ name: "Emil"})</code></p>
+                            </li>
+                            <li>Inget schema - varje dokument <i>kan</i> se olika ut</li>
+                            <li>Namnkonvention: oftast plural (users, products, courses)</li>
+                            <li>MongoDB är <strong>case-sensitive</strong> (Users ≠ users)</li>
+                            <li>Kan kedja operationer: <code>db.users.find().limit(5)</code></li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>mongosh</h2>
+                    <pre><code class="javascript">
+$ mongosh 'connection-string'
+
+// Välj databas (skapas automatiskt om den inte finns)
+$ use my_database
+
+// Visa aktuell databas
+$ db
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Create</h2>
+                    <pre><code class="javascript">// Skapa ett dokument
+$ db.users.insertOne({
+    name: "Jesse James",
+    email: "cowboy@wild-west.com",
+    age: 25,
+    city: "Borgholm"
+})
+
+// Skapa flera dokument
+$ db.users.insertMany([
+    {name: "Emil", acro: "efo"},
+    {name: "Masse", acro: "msc"}
+])
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Read</h2>
+                    <pre><code class="javascript">// db.collection.operation()
+
+// Hitta alla
+db.users.find()
+
+// filter
+db.users.find({age: {$gte: 18}})
+
+// Hitta ett dokument
+db.users.findOne({courseCode: "DV1703"})
+
+// Projection
+// Hitta alla användare, visa bara namn och email
+db.users.find({}, {name: 1, email: 1, _id: 0})
+
+// Hitta användare över 18, visa bara namn, ej _id
+db.users.find({age: {$gte: 18}}, {name: 1, _id: 0})
+
+// Sortering - sortera utiåfrn age descending/fallande, visa bara 5 documents
+db.users.find().sort({age: -1}).limit(5)
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Update</h2>
+                    <pre><code class="javascript">// Uppdatera ett dokument
+db.teachers.updateOne( { email: "åäö@bth.se"}, 
+                            { $set: { password: "LoL", roomNbr: "J3322" } })
+
+// Uppdatera flera dokument - alla där age är under 18 får
+db.users.updateMany( { age: { $lt: 18 } }, {$set: { status: "minor" } } )
+
+// Upsert (upsert - skapa om inte finns)
+db.courses.updateOne( { code: "DV1867"}, { $set: { name: "Rensa fisk" } }, 
+                     { upsert: true }
+                  )
+</code></pre>
+                </section>
+
+                <section>
+                    <h2>Delete</h2>
+                    <pre><code class="javascript">// Ta bort ett dokument
+db.courses.deleteOne({name: "Datastrukturer och syslöjd"})
+
+// Ta bort flera dokument vars fält har ett visst värde
+db.cars.deleteMany({fuel: "uranium"})
+
+// Ta bort alla dokument i collection (trunkera)
+db.courses.deleteMany({})
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h4>Query Operators</h4>
+                    <div class="two-column">
+                        <div>
+                            <h5>Jämförelse</h5>
+                            
+                                <h6>- <code>$eq, $ne</code> - lika/inte lika</h6>
+                                <h6>- <code>$gt, $gte</code> - större än</h6>
+                                <h6>- <code>$lt, $lte</code> - mindre än</h6>
+                                <h6>- <code>$in, $nin</code> - i/inte i array</h6>
+                            
+                            <h5>Logiska</h5>
+                            
+                                <h6>- <code>$and, $or</code></h6>
+                                <h6>- <code>$not, $nor</code></h6>
+                            
+                        </div>
+                        <div>
+
+                            <pre><code class="javascript">// Ålder mellan 18-65
+db.students.find({ age: { $gte: 38, $lte: 65 } })
+
+// alla dokument där kursnamn eller kurskod finns
+db.courses.find( { $or: [ { name: {$exists: true}}, 
+                         { code: {$exists: true}} ]
+})
+
+// Namn börjar med "A". Vi kan alltså använda regex
+db.courses.find({ name: { $regex: "^A" } })
+                            </code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Indexering</h2>
+                    <div class="two-column">
+                        <div>
+                            <h6>Precis som i en RDB kan vi indexera attribut/fält för snabbar queries.</h6>
+                            <h6>Och, precis som i en RDB, är kostnaden långsammare skriv-operationer (insert, update osv).</h6>
+                            <h6>Vid stora datamängder är indexering dock så pass mkt snabbare.</h6>
+                            <h6>Indexera ofta använda query-fält, men inte för många</h6>
+                            
+                        </div>
+                        <div>
+                            <h>Typer av index</h3>
+                            <pre><code class="javascript">// Single field
+db.courses.createIndex( {code: 1} )
+
+// Compound index
+db.courses.createIndex({ code: 1, name: 1 })
+
+
+// Visa index
+db.courses.getIndexes()
+                            </code></pre>
+                        </div>
+                    </div>
+                    
+                </section>
+
+                <section>
+                    <h4>"Aggregation Pipeline" - operationer för mer avanacerade operationer</h4>
+                    <div >
+                        <div>
+                            <ul>
+                                <li><code>$match</code> - Filtrera dokument</li>
+                                <li><code>$group</code> - Gruppera och aggregera</li>
+                                <li><code>$sort</code> - Sortera resultat</li>
+                                <li><code>$project</code> - Forma output</li>
+                                <li><code>$lookup</code> - JOIN-liknande</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h4>Aggregation Pipeline - Exempel</h4>
+                    <pre><code class="javascript">
+// Hitta kunders totala beställningsvärde
+db.orders.aggregate([
+    // Filtrera färdiga beställningar
+    {
+        $match: {status: "completed"}
+    },
+    // Gruppera per kund
+    {
+        $group: {
+        _id: "$customer_id",
+        total_amount: {$sum: "$amount"},
+        order_count: {$sum: 1},
+        avg_order: {$avg: "$amount"}
+        }
+    },
+    // Sortera efter totalt värde, 10 dokument (topp 10)
+    { $sort: {total_amount: -1} }, { $limit: 10 } 
+])
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>När ska man använda MongoDB?</h2>
+                    <div class="two-column">
+                        <div>
+                            <h3>Pros:</h3>
+                            <ul>
+                                <li>Varierande datastrukturer</li>
+                                <li>Horisontell skalning</li>
+                                <li>Realtids appar</li>
+                                <li>Stora datamängder (många write, read)</li>
+                                <li>JSON</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3>Cons:</h3>
+                            <ul>
+                                <li>Komplexa transaktioner (t ex med rollbacks) saknas  </li>
+                                <li>Komplexa strukturer med logisk sammansatt data.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <h2>Tack och hej!</h2>
+                    
+                </section>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/notes/notes.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/markdown/markdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/highlight.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+            highlight: {
+                beforeHighlight: hljs => hljs.configure({languages: ['javascript', 'json']})
+            }
+        });
+    </script>
+</body>
+</html>

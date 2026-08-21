@@ -1,0 +1,241 @@
+/* presentation-styles.css */
+
+/* Allmänna förbättringar */
+.reveal .slides section {
+    text-align: left;
+}
+
+.reveal h1, .reveal h2, .reveal h3 {
+    text-align: center;
+}
+
+.reveal .slides section[data-background-color] {
+    color: white;
+}
+
+/* Två-kolumn layout */
+.two-column {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.two-column > div {
+    flex: 1;
+}
+
+/* NoSQL-typer grid */
+.nosql-types {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.nosql-types > div {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid #007acc;
+}
+
+.nosql-types h3 {
+    margin-top: 0;
+    color: #007acc;
+    text-align: left;
+}
+
+/* CAP-teorem layout */
+.cap-theorem {
+    display: flex;
+    justify-content: space-around;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+}
+
+.cap-item {
+    flex: 1;
+    min-width: 200px;
+    text-align: center;
+    background: #f0f8ff;
+    padding: 1.5rem;
+    margin: 0.5rem;
+    border-radius: 50%;
+    border: 3px solid #007acc;
+}
+
+.cap-item h3 {
+    margin-top: 0;
+    color: #007acc;
+}
+
+/* Tabeller */
+.reveal table {
+    margin: 1rem auto;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.reveal table th,
+.reveal table td {
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.reveal table th {
+    background-color: #007acc;
+    color: white;
+    font-weight: bold;
+}
+
+.reveal table tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+/* Kodblock förbättringar */
+.reveal pre {
+    width: 100%;
+    margin: 1rem 0;
+}
+
+.reveal pre code {
+    max-height: 500px;
+    font-size: 0.8em;
+    line-height: 1.4;
+    padding: 1rem;
+}
+
+/* Pipeline stages */
+.pipeline-stages {
+    margin: 2rem 0;
+}
+
+.pipeline-stages ul {
+    columns: 2;
+    column-gap: 2rem;
+}
+
+/* Bra för / Undvik för layout */
+.good-for h3 {
+    color: #28a745;
+    text-align: left;
+}
+
+.avoid-for h3 {
+    color: #dc3545;
+    text-align: left;
+}
+
+.good-for,
+.avoid-for {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+.good-for {
+    border-left: 4px solid #28a745;
+}
+
+.avoid-for {
+    border-left: 4px solid #dc3545;
+}
+
+/* Nästa steg layout */
+.next-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.next-steps > div {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-bottom: 4px solid #007acc;
+    text-align: center;
+}
+
+.next-steps h3 {
+    margin-top: 0;
+    color: #007acc;
+}
+
+/* Fragment-animationer */
+.reveal .fragment {
+    transition: all 0.3s ease;
+}
+
+/* Responsiv design */
+@media (max-width: 768px) {
+    .two-column {
+        flex-direction: column;
+    }
+    
+    .nosql-types {
+        grid-template-columns: 1fr;
+    }
+    
+    .cap-theorem {
+        flex-direction: column;
+    }
+    
+    .cap-item {
+        border-radius: 8px;
+        margin: 0.5rem 0;
+    }
+    
+    .pipeline-stages ul {
+        columns: 1;
+    }
+}
+
+/* Speciella slide-bakgrunder */
+.reveal .slides section:first-child {
+    background: linear-gradient(135deg, #007acc, #0056a3);
+    color: white;
+}
+
+.reveal .slides section:first-child h1,
+.reveal .slides section:first-child h3,
+.reveal .slides section:first-child p {
+    color: white;
+}
+
+/* Syntax highlighting anpassningar */
+.reveal pre code.hljs {
+    background: #2d3748;
+    color: #e2e8f0;
+}
+
+/* Mellanrum förbättringar */
+.reveal .slides section .fragment {
+    margin: 0.5rem 0;
+}
+
+.reveal ul li {
+    margin: 0.3rem 0;
+}
+
+/* Hover-effekter för interaktiva element */
+.nosql-types > div:hover,
+.good-for:hover,
+.avoid-for:hover,
+.next-steps > div:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* Accent färger för olika sektioner */
+.reveal section[data-background-color="#007acc"] {
+    color: white;
+}
+
+.reveal section[data-background-color="#007acc"] h1,
+.reveal section[data-background-color="#007acc"] h2,
+.reveal section[data-background-color="#007acc"] h3 {
+    color: white;
+}
