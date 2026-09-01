@@ -8,7 +8,7 @@ curl http://localhost:3000/
 curl http://localhost:3000/api/courses
 
 #  ny kurs
-curl -X POST http://localhost:3000/api/courses -H "Content-Type: application/json" -d '{"coursCode":"TEST001","courseName":"Test Kurs","points":7.5"}'
+curl -X POST http://localhost:3000/api/courses -H "Content-Type: application/json" -d '{"courseCode":"TEST001","courseName":"Test Kurs","points":7.5}'
 
 # specifik kurs (t ex 68c424b0e38f42c92c66efb7)
 curl http://localhost:3000/api/courses/68c424b0e38f42c92c66efb7

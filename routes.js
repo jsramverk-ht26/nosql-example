@@ -69,7 +69,7 @@ router.put('/courses/:id', async (req, res) => {
       );
 
     if (result.matchedCount === 0) {
-      return res.status(404).json({ error: 'course not found:', _id });
+      return res.status(404).json({ error: 'course not found', id: req.params.id });
     }
 
     res.json({ message: 'PUT ok' });
